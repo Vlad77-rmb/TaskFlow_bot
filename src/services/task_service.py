@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -33,7 +33,7 @@ class TaskService:
         user = await self.users.get_or_create(telegram_id)
 
         if due_at is None and due_in_minutes is not None:
-            due_at = datetime.now(timezone.utc) + timedelta(minutes=due_in_minutes)
+            due_at = datetime.now(UTC) + timedelta(minutes=due_in_minutes)
 
         task = await self.tasks.create(
             user_id=user.id,

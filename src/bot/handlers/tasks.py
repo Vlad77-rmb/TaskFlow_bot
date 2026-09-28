@@ -1,4 +1,4 @@
-from datetime import date, datetime, time, timezone
+from datetime import UTC, date, datetime, time
 
 from aiogram import F, Router
 from aiogram.filters import Command
@@ -16,7 +16,7 @@ from src.bot.keyboards import (
     time_kb,
 )
 from src.bot.states import TaskForm
-from src.db.models.task import Priority, Task, TaskStatus
+from src.db.models.task import Task, TaskStatus
 from src.services import TaskService
 
 router = Router(name="tasks")
@@ -43,14 +43,14 @@ def _parse_manual_due(raw: str) -> datetime | None:
     # Пробуем сначала полный формат с годом
     try:
         dt = datetime.strptime(raw, "%d.%m.%Y %H:%M")
-        return dt.astimezone().astimezone(timezone.utc)
+        return dt.astimezone().astimezone(UTC)
     except ValueError:
         pass
 
     # Затем короткий формат без года - явно дописываем год
     try:
         dt = datetime.strptime(f"{raw} {current_year}", "%d.%m %H:%M %Y")
-        return dt.astimezone().astimezone(timezone.utc)
+        return dt.astimezone().astimezone(UTC)
     except ValueError:
         return None
 
@@ -176,7 +176,7 @@ async def cal_time(callback: CallbackQuery, state: FSMContext) -> None:
             show_alert=True,
         )
         return
-    utc_dt = local_dt.astimezone(timezone.utc)
+    utc_dt = local_dt.astimezone(UTC)
     await state.update_data(due_at=utc_dt.isoformat())
     await state.set_state(TaskForm.confirm)
     await callback.message.edit_text(

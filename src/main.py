@@ -7,10 +7,10 @@ from aiogram.fsm.storage.redis import RedisStorage
 
 from src.bot.handlers import common, tasks
 from src.bot.middlewares import DatabaseMiddleware
+from src.bot.middlewares.menu import MenuMiddleware
 from src.core.config import settings
 from src.core.logging import setup_logging
 from src.services import setup_scheduler
-from src.bot.middlewares.menu import MenuMiddleware
 
 logger = logging.getLogger(__name__)
 

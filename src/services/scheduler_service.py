@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from aiogram import Bot
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 async def check_reminders(bot: Bot) -> None:
     async with async_session_factory() as session:
         repo = TaskRepository(session)
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         tasks = await repo.due_for_reminder(now)
 
         for task in tasks:

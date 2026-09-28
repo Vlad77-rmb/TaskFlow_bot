@@ -4,8 +4,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from src.bot import texts
-from src.services import TaskService
 from src.bot.keyboards.main_menu import main_menu
+from src.services import TaskService
 
 router = Router(name="common")
 

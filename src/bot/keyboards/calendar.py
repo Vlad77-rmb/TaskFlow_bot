@@ -11,7 +11,7 @@
 from __future__ import annotations
 
 import calendar
-from datetime import date, datetime
+from datetime import date
 
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder

@@ -1,5 +1,6 @@
+from datetime import UTC, datetime
+
 import pytest
-from datetime import datetime, timedelta, timezone
 
 from src.db.models.task import Priority, TaskStatus
 from src.services.task_service import TaskService
@@ -32,7 +33,7 @@ async def test_create_task_with_priority(session):
 async def test_create_task_with_due_in_minutes(session):
     """due_in_minutes конвертируется в due_at."""
     service = TaskService(session)
-    before = datetime.now(timezone.utc)
+    before = datetime.now(UTC)
     task = await service.create_task(
         telegram_id=100, title="Soon", due_in_minutes=30
     )
@@ -106,8 +107,8 @@ async def test_list_filters_by_status(session):
 
 @pytest.mark.asyncio
 async def test_create_task_with_explicit_due_at(session):
-    from datetime import datetime, timezone
-    dt = datetime(2026, 12, 25, 18, 30, tzinfo=timezone.utc)
+    from datetime import datetime
+    dt = datetime(2026, 12, 25, 18, 30, tzinfo=UTC)
     service = TaskService(session)
     task = await service.create_task(
         telegram_id=1, title="New Year", due_at=dt
