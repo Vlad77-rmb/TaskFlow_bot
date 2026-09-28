@@ -3,7 +3,6 @@
 [![CI](https://github.com/Vlad77-rmb/TaskFlow_bot/actions/workflows/ci.yml/badge.svg)](https://github.com/Vlad77-rmb/TaskFlow_bot/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.11+-blue)
 ![aiogram](https://img.shields.io/badge/aiogram-3.x-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
 
 Telegram-бот — менеджер задач с напоминаниями на **aiogram 3**.
 
