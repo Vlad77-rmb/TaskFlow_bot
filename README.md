@@ -29,7 +29,7 @@ flowchart LR
 ## Быстрый старт
 
 ```bash
-git clone https://github.com/<you>/taskflow-bot
+git clone https://github.com/Vlad77-rmb/TaskFlow_bot.git
 cd taskflow-bot
 cp .env.example .env
 # вставь BOT_TOKEN
