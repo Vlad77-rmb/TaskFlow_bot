@@ -67,7 +67,7 @@ async def test_complete_task(session):
 
 @pytest.mark.asyncio
 async def test_complete_nonexistent_task(session):
-    """Завершение несуществующей задачи — None."""
+    """Завершение несуществующей задачи - None."""
     service = TaskService(session)
     result = await service.complete_task(1, 9999)
     assert result is None

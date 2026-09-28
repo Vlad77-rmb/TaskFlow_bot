@@ -1,4 +1,4 @@
-from datetime import UTC, date, datetime, time
+from datetime import UTC, date, datetime, time, timedelta
 
 from aiogram import F, Router
 from aiogram.filters import Command
@@ -36,21 +36,36 @@ def _format_task(task: Task) -> str:
 
 
 def _parse_manual_due(raw: str) -> datetime | None:
-    """Парсит 'DD.MM.YYYY HH:MM' или 'DD.MM HH:MM'. Возвращает aware-UTC."""
-    raw = raw.strip()
-    current_year = date.today().year
+    """Парсит 'DD.MM.YYYY HH:MM', 'DD.MM HH:MM' или 'HH:MM'.
 
-    # Пробуем сначала полный формат с годом
+    Для 'HH:MM' берёт сегодняшнюю дату; если время уже прошло - завтрашнюю.
+    Всегда возвращает aware-UTC.
+    """
+    raw = raw.strip()
+    now = datetime.now().astimezone()
+    current_year = now.year
+
+    # Формат 1: полный - DD.MM.YYYY HH:MM
     try:
         dt = datetime.strptime(raw, "%d.%m.%Y %H:%M")
         return dt.astimezone().astimezone(UTC)
     except ValueError:
         pass
 
-    # Затем короткий формат без года - явно дописываем год
+    # Формат 2: без года - DD.MM HH:MM
     try:
         dt = datetime.strptime(f"{raw} {current_year}", "%d.%m %H:%M %Y")
         return dt.astimezone().astimezone(UTC)
+    except ValueError:
+        pass
+
+    # Формат 3: только время - HH:MM (сегодня или завтра)
+    try:
+        t = datetime.strptime(raw, "%H:%M").time()
+        dt = datetime.combine(now.date(), t).astimezone()
+        if dt < now:
+            dt = dt + timedelta(days=1)
+        return dt.astimezone(UTC)
     except ValueError:
         return None
 
@@ -191,8 +206,10 @@ async def cal_time(callback: CallbackQuery, state: FSMContext) -> None:
 async def cal_manual(callback: CallbackQuery, state: FSMContext) -> None:
     await state.set_state(TaskForm.due_manual)
     await callback.message.edit_text(
-        "✏️ Введи дату и время в формате <code>ДД.ММ.ГГГГ ЧЧ:ММ</code>\n"
-        "Например: <code>25.12.2026 18:30</code>"
+        "✏️ Введи дату и время в формате ниже:\n\n"
+        "• <code>25.12.2026 18:30</code> - полная дата\n"
+        "• <code>25.12 18:30</code> - без года\n"
+        "• <code>18:30</code> - сегодня или завтра"
     )
     await callback.answer()
 

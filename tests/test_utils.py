@@ -22,3 +22,24 @@ def test_parse_manual_due_invalid():
     """Мусор возвращает None."""
     assert _parse_manual_due("not a date") is None
     assert _parse_manual_due("") is None
+
+def test_parse_manual_due_time_only_future():
+    """HH:MM (будущее время сегодня) → сегодня."""
+    from datetime import datetime, timedelta
+
+    future = (datetime.now() + timedelta(hours=2)).strftime("%H:%M")
+    dt = _parse_manual_due(future)
+    assert dt is not None
+    today = datetime.now().astimezone().date()
+    assert dt.astimezone().date() == today
+
+
+def test_parse_manual_due_time_only_past():
+    """HH:MM (прошедшее время) → завтра."""
+    from datetime import datetime, timedelta
+
+    past = (datetime.now() - timedelta(hours=2)).strftime("%H:%M")
+    dt = _parse_manual_due(past)
+    assert dt is not None
+    tomorrow = (datetime.now() + timedelta(days=1)).astimezone().date()
+    assert dt.astimezone().date() == tomorrow
