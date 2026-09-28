@@ -100,13 +100,3 @@ pytest -v
 ruff check src tests
 mypy src
 ```
-
-## Roadmap
-
-- [x] Напоминания с закреплением
-- [x] Инлайн-календарь
-- [x] CI (ruff, mypy, pytest)
-- [ ] Timezone per user
-- [ ] Редактирование задач
-- [ ] Теги и фильтры
-- [ ] Вебхуки + FastAPI
