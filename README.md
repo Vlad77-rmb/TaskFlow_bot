@@ -12,7 +12,7 @@ Telegram-бот - менеджер задач с напоминаниями на
 
 | Календарь | Список задач | Напоминание |
 |-----------|--------------|-------------|
-| ![calendar](docs/calendar.png) | ![list](docs/list.png) | ![reminder](docs/reminder.png) |
+| ![calendar](docs/calendar.jpg) | ![list](docs/list.jpg) | ![reminder](docs/reminder.jpg) |
 
 ## Что реализовано
 
