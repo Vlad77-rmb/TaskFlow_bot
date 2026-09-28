@@ -1,16 +1,16 @@
-# TaskFlow Bot 🤖
+# TaskFlow Bot 
 
-Telegram-бот — менеджер задач с напоминаниями на aiogram 3.
+Telegram-бот - менеджер задач с напоминаниями на aiogram 3.
 
 ## Стек
 
-- **aiogram 3.x** — Telegram Bot API
-- **SQLAlchemy 2.0 (async)** + **PostgreSQL** — данные
-- **Alembic** — миграции
-- **Redis** — FSM-хранилище
-- **APScheduler** — напоминания
-- **Docker / docker-compose** — деплой
-- **pytest / ruff / mypy** — качество
+- **aiogram 3.x** - Telegram Bot API
+- **SQLAlchemy 2.0 (async)** + **PostgreSQL** - данные
+- **Alembic** - миграции
+- **Redis** - FSM-хранилище
+- **APScheduler** - напоминания
+- **Docker / docker-compose** - деплой
+- **pytest / ruff / mypy** - качество
 
 ## Архитектура
 
@@ -43,6 +43,7 @@ docker compose up --build
 | `/list` | Активные задачи |
 | `/done <id>` | Завершить |
 | `/delete <id>` | Удалить |
+| `/cancel` | Отменить |
 
 ## Разработка
 
