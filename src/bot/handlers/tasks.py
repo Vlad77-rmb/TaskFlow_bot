@@ -38,16 +38,21 @@ def _format_task(task: Task) -> str:
 def _parse_manual_due(raw: str) -> datetime | None:
     """Парсит 'DD.MM.YYYY HH:MM' или 'DD.MM HH:MM'. Возвращает aware-UTC."""
     raw = raw.strip()
-    for fmt in ("%d.%m.%Y %H:%M", "%d.%m %H:%M"):
-        try:
-            dt = datetime.strptime(raw, fmt)
-        except ValueError:
-            continue
-        if fmt == "%d.%m %H:%M":
-            dt = dt.replace(year=date.today().year)
-        # наивное время считаем локальным → в UTC
+    current_year = date.today().year
+
+    # Пробуем сначала полный формат с годом
+    try:
+        dt = datetime.strptime(raw, "%d.%m.%Y %H:%M")
         return dt.astimezone().astimezone(timezone.utc)
-    return None
+    except ValueError:
+        pass
+
+    # Затем короткий формат без года - явно дописываем год
+    try:
+        dt = datetime.strptime(f"{raw} {current_year}", "%d.%m %H:%M %Y")
+        return dt.astimezone().astimezone(timezone.utc)
+    except ValueError:
+        return None
 
 
 # ========== /add ==========
