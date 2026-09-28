@@ -1,0 +1,41 @@
+services:
+  bot:
+    build: .
+    container_name: taskflow_bot
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DSN: postgresql+asyncpg://taskflow:taskflow@db:5432/taskflow
+      REDIS_DSN: redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    command: sh -c "alembic upgrade head && python -m src.main"
+
+  db:
+    image: postgres:16-alpine
+    container_name: taskflow_db
+    environment:
+      POSTGRES_USER: taskflow
+      POSTGRES_PASSWORD: taskflow
+      POSTGRES_DB: taskflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taskflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: taskflow_redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:
