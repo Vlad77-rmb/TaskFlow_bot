@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Vlad77-rmb/TaskFlow_bot/actions/workflows/ci.yml/badge.svg)](https://github.com/Vlad77-rmb/TaskFlow_bot/actions/workflows/ci.yml)
 
-Telegram-бот — менеджер задач с напоминаниями на aiogram 3.
+Telegram-бот - менеджер задач с напоминаниями на aiogram 3.
 
 ## Стек
 
